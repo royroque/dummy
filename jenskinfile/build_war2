@@ -20,6 +20,7 @@ node(){
             sh 'ls -al'
             sh 'chmod +x runThis'
             sh './runThis'
+            println "THiS IS MY ENV: ${FILENAME}"
         }
     }
 }
