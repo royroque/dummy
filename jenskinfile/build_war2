@@ -1,0 +1,25 @@
+node(){
+    deleteDir()
+    //call build_jar1 jj
+    stage('calling another job'){
+      build job: 'testOnly/build_jar1', propagate: false, wait: false
+    }
+    
+    stage('gitSCM'){
+        println 'git cloning'
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/royroque/dummy']]])
+    }
+    
+    stage('build'){
+        //this requires the that jar job is called
+        println 'building'
+    }
+    
+    stage('run helper script'){
+        dir('scripts'){
+            sh 'ls -al'
+            sh 'chmod +x runThis'
+            sh './runThis'
+        }
+    }
+}
